@@ -1,0 +1,144 @@
+// ================================
+// Select Outlined
+// Requires: select/base.scss
+// ================================
+
+// Imports
+@import './../core/core';
+@import './../core/outlined';
+
+// Variables > Arrow
+$fo-select--arrow-type: 'chevron' !default; // chevron / triangle
+$fo-select--arrow-thickness: 0.1em !default;
+$fo-select--arrow-size: 0.5em !default;
+$fo-select--arrow-color: grey !default;
+$fo-select--arrow-color-hover: $f-highlight-color !default;
+$fo-select--arrow-color-focus: $fo-select--arrow-color-hover !default;
+$fo-select--arrow-color-disabled: $f-border-color-disabled !default;
+
+// Variables > Field
+$fo-select--field-padding-right: $fo-field-padding-right * 3 !default;
+
+$field: 'select';
+$theme: 'outlined';
+$common-args: ($field, $theme);
+
+// Mixins
+@include fo-common-field($field);
+@include fo-common-label($field);
+@include fo-common-label-text($field);
+@include fo-common-indicator($field);
+
+@include f-field($common-args...) {
+    padding-right: $fo-select--field-padding-right;
+}
+
+@include f-icon($common-args...) {
+    position: absolute;
+    transform-origin: center right;
+    pointer-events: none;
+    transition: transition(border-color);
+    right: calc(
+        #{$fo-select--field-padding-right/2} + #{$fo-select--arrow-size/2}
+    );
+    top: calc(#{$fo-field-padding-top} + #{$f-border-width});
+}
+
+// Chevron down arrow
+@if ($fo-select--arrow-type == 'chevron') {
+    @include f-icon($common-args...) {
+        // Open chevron arrow ᐯ
+        transform: translateY(50%) rotate(45deg);
+        margin-top: 0.05em; // Visual realignment
+        width: $fo-select--arrow-size;
+        height: $fo-select--arrow-size;
+        display: block;
+        border-style: solid;
+        border-width: 0 $fo-select--arrow-thickness $fo-select--arrow-thickness
+            0;
+        border-color: $fo-select--arrow-color;
+    }
+
+    // Arrow > Hover
+    @include f-icon($common-args..., $state: ':hover') {
+        border-color: $fo-select--arrow-color-hover;
+    }
+
+    // Arrow > Focus
+    @include f-icon($common-args..., $state: ':focus') {
+        border-color: $fo-select--arrow-color-focus;
+    }
+
+    // Arrow > Error
+    @include f-icon($common-args..., $has-error: true) {
+        border-color: $f-border-color-error;
+    }
+
+    // Arrow > Hover + Error
+    @include f-icon($common-args..., $state: ':hover', $has-error: true) {
+        border-color: $f-border-color-error;
+    }
+
+    // Arrow > Focus + Error
+    @include f-icon($common-args..., $state: ':focus', $has-error: true) {
+        border-color: $f-border-color-error;
+    }
+} @else if ($fo-select--arrow-type == 'triangle') {
+    // Solid triangle arrow ▼
+    @include f-icon($common-args...) {
+        transform: translateY(50%);
+        margin-top: 0.35em; // Visual realignment
+        width: 0;
+        height: 0;
+        border-left: $fo-select--arrow-size/1.5 solid transparent;
+        border-right: $fo-select--arrow-size/1.5 solid transparent;
+        border-top: $fo-select--arrow-size/1.5 solid $fo-select--arrow-color;
+    }
+
+    // Arrow > Hover
+    @include f-icon($common-args..., $state: ':hover') {
+        border-top-color: $fo-select--arrow-color-hover;
+    }
+
+    // Arrow > Focus
+    @include f-icon($common-args..., $state: ':focus') {
+        border-top-color: $fo-select--arrow-color-focus;
+    }
+
+    // Arrow > Error
+    @include f-icon($common-args..., $has-error: true) {
+        border-top-color: $f-border-color-error;
+    }
+
+    // Arrow > Hover + Error
+    @include f-icon($common-args..., $state: ':hover', $has-error: true) {
+        border-top-color: $f-border-color-error;
+    }
+
+    // Arrow > Focus + Error
+    @include f-icon($common-args..., $state: ':focus', $has-error: true) {
+        border-top-color: $f-border-color-error;
+    }
+}
+
+// Arrow > Disabled
+@include f-icon($common-args..., $state: ':disabled') {
+    border-color: $fo-select--arrow-color-disabled;
+}
+
+@include f-label($common-args...) {
+    top: 0;
+    bottom: 0;
+    left: calc(#{$f-border-width} + #{$fo-field-padding-left});
+}
+
+@include f-label-text($common-args...) {
+    transition: transition(transform), transition(color),
+        transition(letter-spacing);
+    will-change: transform, color;
+    transform: translateY(0) scale(1);
+}
+
+@include f-message($common-args...) {
+    margin: $fo-message-margin-inset;
+}

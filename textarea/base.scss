@@ -1,0 +1,32 @@
+// ================================
+// Textarea Base
+// The base styles for themes
+// ================================
+
+// Variables, mixins, and functions
+@import './../core/core';
+@import './../core/common';
+
+// Variables
+$f-textarea--line-height: 1.5 !default;
+$f-textarea--max-height: 19em !default;
+
+$field: 'textarea';
+
+@include f-common-base($field);
+@include f-common-inner($field);
+@include f-common-field($field);
+@include f-common-label($field);
+@include f-common-label-text($field);
+@include f-common-indicator($field);
+@include f-common-message($field);
+
+@include f-field($field) {
+    resize: vertical;
+    line-height: $f-textarea--line-height;
+    max-height: $f-textarea--max-height;
+}
+
+@include f-label($field) {
+    line-height: $f-textarea--line-height;
+}

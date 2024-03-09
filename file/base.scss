@@ -1,0 +1,29 @@
+// ================================
+// File Base
+// The base styles for themes
+// ================================
+
+// Imports
+@import './../core/core';
+@import './../core/common';
+
+// Variables
+$field: 'file';
+
+// Mixins
+@include f-common-base($field);
+@include f-common-inner($field);
+@include f-common-field($field);
+@include f-common-indicator($field);
+@include f-common-message($field);
+
+@include f-field($field) {
+    &:not(:disabled):hover,
+    &:not(:disabled):focus {
+        cursor: pointer;
+    }
+}
+
+@include f-label($field) {
+    user-select: none;
+}

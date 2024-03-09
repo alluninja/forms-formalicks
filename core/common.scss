@@ -1,0 +1,264 @@
+// ================================
+// Common Mixins
+// Initial styles applied to formalism elements
+// Requires: common/core.scss
+// ================================
+
+// Element root
+@mixin f-common-base($field: null) {
+    @include f-base($field) {
+        position: relative;
+        font-size: $f-field-size;
+        text-align: left;
+
+        // Disable mobile tap color
+        & * {
+            -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+        }
+
+        @media screen and (prefers-reduced-motion) {
+            html & *,
+            html & *:before,
+            html & *:after {
+                transition: none !important;
+                animation: none !important;
+            }
+        }
+    }
+}
+
+// Inner wrapping element
+@mixin f-common-inner($field: null) {
+    @include f-inner($field) {
+        display: block;
+        position: relative;
+        z-index: 1;
+    }
+}
+
+// Form field
+@mixin f-common-field($field: null) {
+    @include f-field($field) {
+        color: $f-text-color;
+        border: 0;
+        appearance: none; // Fix field border-radius in iOS
+        -webkit-appearance: none; // Fix field border-radius in iOS
+        width: 100%;
+        font-size: $f-text-font-size;
+        line-height: $f-text-line-height;
+        font-family: inherit;
+        display: block;
+        outline: 0;
+        touch-action: manipulation; // Enable panning and pinch zoom gestures, but disable additional non-standard gestures
+
+        // Field > Disabled
+        &:disabled {
+            color: $f-text-color-disabled;
+            cursor: not-allowed;
+        }
+        // Allow caret/selection/autofill colors only on certain fields
+        @if (index($f-text-select-elements, $field) != null) {
+            caret-color: $f-text-caret-color;
+
+            &::selection {
+                color: $f-selection-color !important;
+                background: $f-selection-bg !important;
+                text-shadow: none;
+            }
+
+            // Selection colors > Disabled
+            &:disabled::selection {
+                color: $f-selection-color !important;
+                background: $f-disabled-color !important;
+                text-shadow: none;
+            }
+
+            @if (
+                $f-remove-autofill and
+                    index($f-autofill-elements, $field) !=
+                    null
+            ) {
+                // Autofill color
+                &:-webkit-autofill {
+                    -webkit-text-fill-color: $f-text-color !important;
+                }
+            }
+        }
+    }
+
+    // Field > Error
+    @include f-field($field, $has-error: true) {
+        // Allow caret/selection colors only on certain fields
+        @if (index($f-text-select-elements, $field) != null) {
+            caret-color: $f-error-color;
+            &::selection {
+                color: $f-selection-color !important;
+                background: $f-error-color !important;
+                text-shadow: none;
+            }
+        }
+    }
+}
+
+// Field label (not the label element)
+@mixin f-common-label($field: null) {
+    @include f-label($field) {
+        user-select: none;
+        line-height: $f-label-line-height;
+        font-size: $f-text-font-size;
+    }
+    // Label > Not disabled
+    @include f-label($field, $state: ':not(:disabled)') {
+        cursor: pointer;
+    }
+    // Label > Disabled
+    @include f-label($field, $state: ':disabled') {
+        cursor: not-allowed;
+    }
+}
+
+// Label text
+@mixin f-common-label-text(
+    $field: null,
+    $state: null,
+    $theme: null,
+    $has-error: null
+) {
+    @include f-label-text($field) {
+        color: $f-label-color;
+    }
+}
+
+// Required or optional indicator
+// Use when the indicator is outside the label
+@mixin f-common-indicator($field: null) {
+    @include f-indicator($field) {
+        pointer-events: none;
+        user-select: none;
+
+        &--optional {
+            color: $f-indicator-optional-color;
+            font-size: $f-indicator-optional-size;
+        }
+
+        &--required {
+            color: $f-indicator-required-color;
+            font-size: $f-indicator-required-size;
+        }
+    }
+    // Indicator > Error
+    @include f-indicator($field, $has-error: true) {
+        color: $f-border-color-error;
+    }
+    // Indicator > Disabled
+    @include f-indicator($field, $state: ':disabled') {
+        color: $f-border-color-disabled;
+    }
+}
+
+// Required or optional indicator
+// Use when the indicator is inside the label
+@mixin f-common-label-indicator($field: null) {
+    @include f-label-indicator($field) {
+        pointer-events: none;
+        user-select: none;
+
+        &--optional {
+            color: $f-indicator-optional-color;
+            font-size: $f-indicator-optional-size;
+        }
+
+        &--required {
+            color: $f-indicator-required-color;
+            font-size: $f-indicator-required-size;
+        }
+    }
+    // Indicator > Error
+    @include f-label-indicator($field, $has-error: true) {
+        color: $f-border-color-error;
+    }
+    // Indicator > Disabled
+    @include f-label-indicator($field, $state: ':disabled') {
+        color: $f-border-color-disabled;
+    }
+}
+
+// Fieldset legend
+@mixin f-common-legend($field: null) {
+    @include f-legend($field) {
+        padding: 0;
+    }
+}
+
+// Required or optional indicator
+// Use when indicator is within the legend
+// - Used within Fieldset base
+@mixin f-common-legend-indicator($field: null) {
+    @include f-legend-indicator($field) {
+        pointer-events: none;
+        user-select: none;
+
+        &--optional {
+            color: $f-indicator-optional-color;
+            font-size: $f-indicator-optional-size;
+        }
+
+        &--required {
+            color: $f-indicator-required-color;
+            font-size: $f-indicator-required-size;
+        }
+    }
+    // Indicator > Error
+    @include f-legend-indicator($field, $has-error: true) {
+        color: $f-border-color-error;
+    }
+}
+
+// Message instructions or error
+@mixin f-common-message($field: null) {
+    @include f-message($field) {
+        font-size: $f-message-font-size;
+
+        &--instruction {
+            color: $f-instruction-color;
+        }
+
+        &--error {
+            color: $f-error-color;
+        }
+
+        // Hide the instructions if there's an error
+        @if ($f-hide-instructions-when-error) {
+            &--error + [class$='--instruction'] {
+                display: none;
+            }
+        }
+    }
+    // Message > Error
+    @include f-message($field, $has-error: true) {
+        &--error::selection {
+            color: $f-selection-color !important;
+            background: $f-error-color !important;
+            text-shadow: none;
+        }
+    }
+}
+
+@mixin f-common-button($field: null) {
+    @include f-button($field) {
+        cursor: pointer;
+    }
+}
+
+// Label text within a legend
+@mixin f-common-legend-text($field: null) {
+    @include f-legend-text($field) {
+        color: $f-text-color;
+        display: block;
+        line-height: $f-label-line-height;
+    }
+    // Legend text > Error
+    @include f-legend-text($field, $has-error: true) {
+        color: $f-label-color-error;
+    }
+}

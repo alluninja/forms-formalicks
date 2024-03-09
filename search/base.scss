@@ -1,0 +1,51 @@
+// ================================
+// Search Base
+// The base styles for themes
+// ================================
+
+// Imports
+@import './../core/core';
+@import './../core/common';
+
+$field: 'search';
+
+@include f-common-base($field);
+@include f-common-inner($field);
+@include f-common-field($field);
+@include f-common-label($field);
+@include f-common-label-text($field);
+@include f-common-indicator($field);
+@include f-common-message($field);
+@include f-common-button($field);
+
+@include f-base($field) {
+    // Removes Safari magnifying glass decoration
+    // taking up space in the left of the field
+    ::-webkit-search-decoration {
+        -webkit-appearance: none;
+    }
+}
+
+@include f-field($field) {
+    box-sizing: border-box;
+}
+
+@include f-button($field) {
+    -webkit-appearance: none;
+    appearance: none;
+    border: 0;
+    padding: 0;
+    font-size: $f-text-font-size;
+    background-color: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    // Safari > Fix jumping movement with box-shadow animation
+    transform: translateZ(0);
+}
+
+// Button > Disabled
+@include f-button($field, $state: ':disabled') {
+    pointer-events: none;
+    opacity: 0.3;
+}

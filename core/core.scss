@@ -1,0 +1,500 @@
+// ================================
+// Core Variables
+// Common variables throughout all theme types
+// Additional variables are available in the theme files
+// ================================
+
+// Scope Formalism to a container
+$f-selector-scope: '' !default;
+
+// Field highlights
+$f-highlight-color: #6d00f0 !default;
+
+// Field backgrounds
+$f-bg-color: white !default;
+
+// Field states
+$f-error-color: #e91e63 !default;
+$f-success-color: #cddc39 !default;
+$f-disabled-color: #767676 !default;
+$f-instruction-color: #767676 !default;
+
+// Field text
+$f-text-font-size: 1em !default;
+$f-text-line-height: normal !default;
+$f-text-color: inherit !default;
+$f-text-color-disabled: $f-disabled-color !default;
+$f-text-caret-color: $f-highlight-color !default;
+
+// Field labels
+$f-label-color: inherit !default;
+$f-label-color-hover: $f-highlight-color !default;
+$f-label-color-focus: $f-highlight-color !default;
+$f-label-color-filled: $f-text-color !default;
+$f-label-color-error: $f-error-color !default;
+$f-label-color-disabled: $f-disabled-color !default;
+$f-label-line-height: 1.1 !default;
+
+// Field borders
+$f-border-color: #a4a8a8 !default;
+$f-border-color-focus: $f-highlight-color !default;
+$f-border-color-hover: $f-border-color-focus !default;
+$f-border-color-active: $f-border-color-focus !default;
+$f-border-color-filled: $f-border-color !default;
+$f-border-color-error: $f-error-color !default;
+$f-border-color-success: $f-success-color !default;
+$f-border-color-disabled: #dae0e4 !default;
+$f-border-width: 1px !default; // px only
+$f-border-width-hover: 1px !default;
+$f-border-width-focus: 2px !default;
+$f-border-width-error: 2px !default;
+$f-border-width-filled: $f-border-width !default;
+
+// Field indicators (required/option)
+$f-indicator-required-color: $f-border-color !default;
+$f-indicator-required-size: 1em !default;
+$f-indicator-optional-color: $f-border-color !default;
+$f-indicator-optional-size: 0.65em !default;
+
+// Field transitions
+$f-transition-duration: 0.2s !default;
+$f-transition-timing: cubic-bezier(0.51, 0.92, 0.24, 1) !default;
+
+// Field text selection colors
+$f-selection-color: white !default;
+$f-selection-bg: $f-highlight-color !default;
+
+// General settings
+$f-hide-instructions-when-error: true !default;
+$f-field-size: inherit !default;
+$f-message-font-size: 0.9em !default;
+$f-remove-autofill: true !default;
+
+// Private variables
+$f-selector-filled: '.is-filled';
+$f-selector-error: '.has-error';
+$f-text-select-elements: ('input', 'textarea', 'search');
+$f-autofill-elements: ('input', 'search');
+
+// ================================
+// Core Mixins
+// Mixins to help you target and style formalism elements
+// ================================
+
+// Element root
+// - $state unavailable (field state)
+@mixin f-base($field: null, $theme: null, $has-error: null, $is-filled: null) {
+    $scope: formalism-scope();
+    $block: block-normalise($field);
+    $block-modifier: block-modifier($block, $theme);
+    $error-modifier: error-modifier($has-error);
+    $filled-modifier: filled-modifier($is-filled);
+    #{$scope}#{$block}#{$block-modifier}#{$error-modifier}#{$filled-modifier} {
+        @content;
+    }
+}
+
+// Inner wrapping element
+// - $state unavailable (field state)
+@mixin f-inner($field: null, $theme: null, $has-error: null, $is-filled: null) {
+    $scope: formalism-scope();
+    $block: block-normalise($field);
+    $block-modifier: block-modifier($block, $theme);
+    $error-modifier: error-modifier($has-error);
+    $filled-modifier: filled-modifier($is-filled);
+    #{$scope}#{$block}#{$block-modifier}#{$error-modifier}#{$filled-modifier}
+        #{$block}__inner {
+        @content;
+    }
+}
+
+// Form field (has state)
+@mixin f-field(
+    $field: null,
+    $theme: null,
+    $state: null,
+    $has-error: null,
+    $is-filled: null
+) {
+    $scope: formalism-scope();
+    $block: block-normalise($field);
+    $block-modifier: block-modifier($block, $theme);
+    $error-modifier: error-modifier($has-error);
+    $filled-modifier: filled-modifier($is-filled);
+    $filled-modifier-edge: filled-modifier-edge($is-filled);
+    #{$scope}#{$block}#{$block-modifier}#{$error-modifier}#{$filled-modifier}
+        #{$block}__field#{$state},
+    #{$scope}#{$block}#{$block-modifier}#{$error-modifier}
+        #{$block}__field#{$filled-modifier-edge}#{$state} {
+        @content;
+    }
+}
+
+// Field label (not the label element)
+@mixin f-label(
+    $field: null,
+    $theme: null,
+    $state: null,
+    $has-error: null,
+    $is-filled: null
+) {
+    $scope: formalism-scope();
+    $block: block-normalise($field);
+    $block-modifier: block-modifier($block, $theme);
+    $error-modifier: error-modifier($has-error);
+    $filled-modifier: filled-modifier($is-filled);
+    $filled-modifier-edge: filled-modifier-edge($is-filled);
+    #{$scope}#{$block}#{$block-modifier}#{$error-modifier}#{$filled-modifier}
+        #{$block}__field#{$state}
+        ~ #{$block}__label,
+    #{$scope}#{$block}#{$block-modifier}#{$error-modifier}
+        #{$block}__field#{$filled-modifier-edge}#{$state}
+        ~ #{$block}__label {
+        @content;
+    }
+}
+
+// Field label text
+@mixin f-label-text(
+    $field: null,
+    $theme: null,
+    $state: null,
+    $has-error: null,
+    $is-filled: null
+) {
+    $scope: formalism-scope();
+    $block: block-normalise($field);
+    $block-modifier: block-modifier($block, $theme);
+    $error-modifier: error-modifier($has-error);
+    $filled-modifier: filled-modifier($is-filled);
+    $filled-modifier-edge: filled-modifier-edge($is-filled);
+    #{$scope}#{$block}#{$block-modifier}#{$error-modifier}#{$filled-modifier}
+        #{$block}__field#{$state}
+        ~ #{$block}__label
+        #{$block}__label-text,
+    #{$scope}#{$block}#{$block-modifier}#{$error-modifier}
+        #{$block}__field#{$filled-modifier-edge}#{$state}
+        ~ #{$block}__label
+        #{$block}__label-text {
+        @content;
+    }
+}
+
+// Required or optional indicator
+// Use when the indicator is outside the label
+@mixin f-indicator(
+    $field: null,
+    $theme: null,
+    $state: null,
+    $has-error: null,
+    $is-filled: null
+) {
+    $scope: formalism-scope();
+    $block: block-normalise($field);
+    $block-modifier: block-modifier($block, $theme);
+    $error-modifier: error-modifier($has-error);
+    $filled-modifier: filled-modifier($is-filled);
+    #{$scope}#{$block}#{$block-modifier}#{$error-modifier}#{$filled-modifier}
+        #{$block}__field#{$state}
+        ~ #{$block}__indicator {
+        @content;
+    }
+}
+
+// Required or optional indicator
+// Use when the indicator is inside the label
+@mixin f-label-indicator(
+    $field: null,
+    $theme: null,
+    $state: null,
+    $has-error: null,
+    $is-filled: null
+) {
+    $scope: formalism-scope();
+    $block: block-normalise($field);
+    $block-modifier: block-modifier($block, $theme);
+    $error-modifier: error-modifier($has-error);
+    $filled-modifier: filled-modifier($is-filled);
+    #{$scope}#{$block}#{$block-modifier}#{$error-modifier}#{$filled-modifier}
+        #{$block}__field#{$state}
+        ~ #{$block}__label
+        #{$block}__indicator {
+        @content;
+    }
+}
+
+// Required or optional indicator
+// Use when indicator is within the legend
+// - Used within Fieldset base
+// - $state unavailable (field state)
+@mixin f-legend-indicator(
+    $field: null,
+    $theme: null,
+    $has-error: null,
+    $is-filled: null
+) {
+    $scope: formalism-scope();
+    $block: block-normalise($field);
+    $block-modifier: block-modifier($block, $theme);
+    $error-modifier: error-modifier($has-error);
+    $filled-modifier: filled-modifier($is-filled);
+    #{$scope}#{$block}#{$block-modifier}#{$error-modifier}#{$filled-modifier}
+        #{$block}__label
+        #{$block}__indicator {
+        @content;
+    }
+}
+
+// Message instructions or error
+// - $state unavailable (field state)
+@mixin f-message(
+    $field: null,
+    $theme: null,
+    $has-error: null,
+    $is-filled: null
+) {
+    $scope: formalism-scope();
+    $block: block-normalise($field);
+    $block-modifier: block-modifier($block, $theme);
+    $error-modifier: error-modifier($has-error);
+    $filled-modifier: filled-modifier($is-filled);
+    #{$scope}#{$block}#{$block-modifier}#{$error-modifier}#{$filled-modifier}
+        #{$block}__message {
+        @content;
+    }
+}
+
+// Fieldset legend
+// - $state unavailable (field state)
+@mixin f-legend(
+    $field: null,
+    $theme: null,
+    $has-error: null,
+    $is-filled: null
+) {
+    $scope: formalism-scope();
+    $block: block-normalise($field);
+    $block-modifier: block-modifier($block, $theme);
+    $error-modifier: error-modifier($has-error);
+    $filled-modifier: filled-modifier($is-filled);
+    #{$scope}#{$block}#{$block-modifier}#{$error-modifier}#{$filled-modifier}
+        #{$block}__legend {
+        @content;
+    }
+}
+
+// Fieldset legend - inside label
+// - $state unavailable (field state)
+@mixin f-legend-label(
+    $field: null,
+    $theme: null,
+    $has-error: null,
+    $is-filled: null
+) {
+    $scope: formalism-scope();
+    $block: block-normalise($field);
+    $block-modifier: block-modifier($block, $theme);
+    $error-modifier: error-modifier($has-error);
+    $filled-modifier: filled-modifier($is-filled);
+    #{$scope}#{$block}#{$block-modifier}#{$error-modifier}#{$filled-modifier}
+        #{$block}__legend
+        #{$block}__label {
+        @content;
+    }
+}
+
+// Fieldset legend - label-text inside legend
+// - $state unavailable (field state)
+@mixin f-legend-text(
+    $field: null,
+    $theme: null,
+    $has-error: null,
+    $is-filled: null
+) {
+    $scope: formalism-scope();
+    $block: block-normalise($field);
+    $block-modifier: block-modifier($block, $theme);
+    $error-modifier: error-modifier($has-error);
+    $filled-modifier: filled-modifier($is-filled);
+    #{$scope}#{$block}#{$block-modifier}#{$error-modifier}#{$filled-modifier}
+        #{$block}__legend
+        #{$block}__label-text {
+        @content;
+    }
+}
+
+// Button
+// Used within field 'search'
+@mixin f-button(
+    $field: null,
+    $theme: null,
+    $state: null,
+    $has-error: null,
+    $is-filled: null
+) {
+    $scope: formalism-scope();
+    $block: block-normalise($field);
+    $block-modifier: block-modifier($block, $theme);
+    $error-modifier: error-modifier($has-error);
+    $filled-modifier: filled-modifier($is-filled);
+    #{$scope}#{$block}#{$block-modifier}#{$error-modifier}#{$filled-modifier}
+        #{$block}__field#{$state}
+        ~ #{$block}__button {
+        @content;
+    }
+}
+
+// Field icon
+@mixin f-icon(
+    $field: null,
+    $theme: null,
+    $state: null,
+    $has-error: null,
+    $is-filled: null
+) {
+    $scope: formalism-scope();
+    $block: block-normalise($field);
+    $block-modifier: block-modifier($block, $theme);
+    $error-modifier: error-modifier($has-error);
+    $filled-modifier: filled-modifier($is-filled);
+    #{$scope}#{$block}#{$block-modifier}#{$error-modifier}#{$filled-modifier}
+        #{$block}__field#{$state}
+        ~ #{$block}__icon {
+        @content;
+    }
+}
+
+@mixin f-label-before(
+    $field: null,
+    $theme: null,
+    $state: null,
+    $has-error: null,
+    $is-filled: null
+) {
+    $scope: formalism-scope();
+    $block: block-normalise($field);
+    $block-modifier: block-modifier($block, $theme);
+    $error-modifier: error-modifier($has-error);
+    $filled-modifier: filled-modifier($is-filled);
+    #{$scope}#{$block}#{$block-modifier}#{$error-modifier}#{$filled-modifier}
+        #{$block}__field#{$state}
+        ~ #{$block}__label:before {
+        @content;
+    }
+}
+
+@mixin f-label-after(
+    $field: null,
+    $theme: null,
+    $state: null,
+    $has-error: null,
+    $is-filled: null
+) {
+    $scope: formalism-scope();
+    $block: block-normalise($field);
+    $block-modifier: block-modifier($block, $theme);
+    $error-modifier: error-modifier($has-error);
+    $filled-modifier: filled-modifier($is-filled);
+    #{$scope}#{$block}#{$block-modifier}#{$error-modifier}#{$filled-modifier}
+        #{$block}__field#{$state}
+        ~ #{$block}__label:after {
+        @content;
+    }
+}
+
+// Alias
+@mixin f-tickbox($args...) {
+    @include f-label-before($args...) {
+        @content;
+    }
+}
+
+// Alias
+@mixin f-tick($args...) {
+    @include f-label-after($args...) {
+        @content;
+    }
+}
+
+// Alias
+@mixin f-switcher-groove($args...) {
+    @include f-label-before($args...) {
+        @content;
+    }
+}
+
+// Alias
+@mixin f-switcher-knob($args...) {
+    @include f-label-after($args...) {
+        @content;
+    }
+}
+
+// ================================
+// Helper functions
+// ================================
+
+// Create a scope for the styles
+@function formalism-scope() {
+    @return if($f-selector-scope, '#{$f-selector-scope} ', '');
+}
+
+// Normalise the block prefix
+@function block-normalise($alias) {
+    $prefix: '.f-';
+    $hasPrefix: str-slice($alias, 1, str-length($prefix)) == $prefix;
+    @return if($hasPrefix, $alias, '#{$prefix}#{$alias}');
+}
+
+// Create the block theme modifier (the 'M' in BEM)
+@function block-modifier($block, $theme: null) {
+    @return if($block and $theme, '--#{$theme}', '');
+}
+
+// Create the error modifier
+@function error-modifier($has-error: null, $modifier-error: $f-selector-error) {
+    @return if(
+        $has-error == true,
+        $f-selector-error,
+        if($has-error == false, ':not(#{$f-selector-error})', null)
+    );
+}
+
+// Create the filled modifier
+@function filled-modifier($is-filled: null) {
+    @return if(
+        $is-filled == true,
+        $f-selector-filled,
+        if($is-filled == false, ':not(#{$f-selector-filled})', null)
+    );
+}
+
+// Create the filled modifier for Microsoft edge
+// Edge adds classes to the field when autofilled
+@function filled-modifier-edge($is-filled: null) {
+    @return if(
+        $is-filled == true,
+        '.edge-autofilled',
+        if($is-filled == false, ':not(.edge-autofilled)', null)
+    );
+}
+
+// Transition shortened
+// Usage: transition: transition(transform), transition(color);
+@function transition($property) {
+    @return $property $f-transition-duration $f-transition-timing;
+}
+
+// Replace `$search` with `$replace` in `$string`
+@function str-replace($string, $search, $replace: '') {
+    $index: str-index($string, $search);
+    @if $index {
+        @return str-slice($string, 1, $index - 1) + $replace +
+            str-replace(
+                str-slice($string, $index + str-length($search)),
+                $search,
+                $replace
+            );
+    }
+    @return $string;
+}

@@ -1,0 +1,20 @@
+// ================================
+// Input Base
+// The base styles for themes
+// ================================
+
+// Imports
+@import './../core/core';
+@import './../core/common';
+
+// Variables
+$field: 'input';
+
+// Mixins
+@include f-common-base($field);
+@include f-common-inner($field);
+@include f-common-field($field);
+@include f-common-label($field);
+@include f-common-label-text($field);
+@include f-common-indicator($field);
+@include f-common-message($field);

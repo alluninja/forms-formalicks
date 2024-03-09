@@ -1,0 +1,154 @@
+// ================================
+// Switcher Outlined
+// Requires: switcher/base.scss
+// ================================
+
+// Imports
+@import './../core/core';
+@import './../core/outlined';
+
+// Variables
+$fo-switcher--border-width: $f-border-width * 2 !default;
+$fo-switcher--size: 1.15em !default;
+$fo-switcher--field-radius: 10vh !default;
+$fo-switcher--color-checked: $f-highlight-color !default;
+
+$field: 'switcher';
+$theme: 'outlined';
+$common-args: ($field, $theme);
+
+@include f-switcher-knob($common-args...) {
+    font-size: $fo-switcher--size;
+    background-color: $f-bg-color;
+    width: 1.2em;
+    height: 1.2em;
+    border-radius: 50%;
+    border: $fo-switcher--border-width solid currentColor;
+}
+
+// Switch knob > Not disabled + Not error
+@include f-switcher-knob(
+    $common-args...,
+    $state: ':not(:disabled)',
+    $has-error: false
+) {
+    color: $f-border-color;
+    transition: transition(color), transition(border-color), transform 0.1s;
+    will-change: color, transform;
+}
+
+// Switch knob > Hover + Not disabled + Not error
+@include f-switcher-knob(
+    $common-args...,
+    $state: ':hover:not(:disabled)',
+    $has-error: false
+) {
+    color: $f-border-color-hover;
+}
+
+// Switch knob > Focus + Not error
+@include f-switcher-knob(
+    $common-args...,
+    $state: ':focus:not(:active)',
+    $has-error: false
+) {
+    color: $f-border-color-focus;
+}
+
+// Switch knob > Active + Not disabled + Not error
+@include f-switcher-knob(
+    $common-args...,
+    $state: ':active:not(:disabled)',
+    $has-error: false
+) {
+    color: $f-border-color-active;
+}
+
+// Switch knob > Checked + Not disabled + Not error
+@include f-switcher-knob(
+    $common-args...,
+    $state: ':checked:not(:disabled)',
+    $has-error: false
+) {
+    color: $fo-switcher--color-checked;
+}
+
+// Switch knob > Checked
+@include f-switcher-knob($common-args..., $state: ':checked') {
+    transform: translateX(0.75em + 0.1em);
+}
+
+// Switch knob > Checked + Active
+@include f-switcher-knob($common-args..., $state: ':checked:active') {
+    transform: translateX(0.75em + 0.2em);
+}
+
+// Switch knob > Active + Not checked
+@include f-switcher-knob($common-args..., $state: ':active:not(:checked)') {
+    transform: translateX(-0.2em);
+}
+
+@include f-switcher-groove($common-args...) {
+    font-size: $fo-switcher--size;
+    border: $fo-switcher--border-width solid currentColor;
+    border-radius: $fo-switcher--field-radius;
+}
+
+// Switch groove > Not disabled + Not error
+@include f-switcher-groove(
+    $common-args...,
+    $state: ':not(:disabled)',
+    $has-error: false
+) {
+    color: $f-border-color;
+}
+
+// Switch groove > Checked + Not disabled + Not error
+@include f-switcher-groove(
+    $common-args...,
+    $state: ':checked:not(:disabled)',
+    $has-error: false
+) {
+    color: $fo-switcher--color-checked;
+}
+
+@include f-label-text($common-args...) {
+    transition: transition(color);
+    will-change: transform;
+}
+
+// Label text > Checked + Not disabled + No error
+@include f-label-text(
+    $common-args...,
+    $state: ':checked:not(:disabled)',
+    $has-error: false
+) {
+    color: $f-label-color-filled;
+}
+
+// Label text > Focus + Not disabled + No error
+@include f-label-text(
+    $common-args...,
+    $state: ':focus:not(:disabled)',
+    $has-error: false
+) {
+    color: $f-label-color-focus;
+}
+
+// Label text > Hover + Not disabled + No error
+@include f-label-text(
+    $common-args...,
+    $state: ':hover:not(:disabled)',
+    $has-error: false
+) {
+    color: $f-label-color-hover;
+}
+
+// Label text > Disabled
+@include f-label-text($common-args..., $state: ':disabled') {
+    color: $f-label-color-disabled;
+}
+
+@include f-message($common-args...) {
+    margin: $fo-message-margin;
+}

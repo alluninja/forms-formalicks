@@ -1,0 +1,98 @@
+// ================================
+// Switcher Base
+// The base styles for themes
+// ================================
+
+// Imports
+@import './../core/core';
+@import './../core/common';
+
+// Variables
+$f-switcher--spacing: 0.75em !default;
+$f-switcher--label-line-height: 1 !default;
+
+$field: 'switcher';
+
+// Mixins
+@include f-common-base($field);
+@include f-common-inner($field);
+@include f-common-label($field);
+@include f-common-label-text($field);
+@include f-common-label-indicator($field);
+@include f-common-message($field);
+
+@include f-inner($field) {
+    display: inline-flex;
+    flex-wrap: nowrap;
+    align-items: center;
+}
+
+@include f-label($field) {
+    color: inherit;
+    position: relative;
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
+    transition: transition(color);
+    will-change: color;
+}
+
+@include f-switcher-knob($field) {
+    content: '';
+    display: block;
+    color: $f-border-color;
+    flex-shrink: 0;
+    flex-grow: 0;
+    position: absolute;
+    left: 0;
+    transition: transition(color), transform 0.1s;
+    will-change: color, transform;
+    transform: translateX(-0.1em);
+}
+
+// Switch knob > Disabled
+@include f-switcher-knob($field, $state: ':disabled') {
+    color: $f-border-color-disabled;
+}
+
+// Switch knob > Not disabled + Error
+@include f-switcher-knob($field, $state: ':not(:disabled)', $has-error: true) {
+    color: $f-error-color;
+}
+
+@include f-switcher-groove($field) {
+    content: '';
+    display: block;
+    color: $f-border-color;
+    flex-shrink: 0;
+    flex-grow: 0;
+    margin-right: $f-switcher--spacing;
+    width: 2em;
+    height: 1em;
+    display: block;
+    transition: transition(color);
+    will-change: color;
+}
+
+// Switch groove > Disabled
+@include f-switcher-groove($field, $state: ':disabled') {
+    color: $f-border-color-disabled;
+}
+
+// Switch groove > Not disabled + Error
+@include f-switcher-groove(
+    $field,
+    $state: ':not(:disabled)',
+    $has-error: true
+) {
+    color: $f-error-color;
+}
+
+@include f-field($field) {
+    clip: rect(1px, 1px, 1px, 1px); // Allows tabbing still
+    position: absolute;
+}
+
+@include f-label-text($field) {
+    line-height: $f-switcher--label-line-height;
+}

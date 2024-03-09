@@ -1,0 +1,152 @@
+// ================================
+// Checkbox Outlined
+// Requires: checkbox/base.scss
+// ================================
+
+// Imports
+@import './../core/core';
+@import './../core/outlined';
+
+// Variables
+$fo-checkbox--border-radius: 0.15em !default;
+$fo-checkbox--border-width: $f-border-width * 2 !default;
+$fo-checkbox--color-checked: $f-highlight-color !default;
+
+$field: 'checkbox';
+$theme: 'outlined';
+$common-args: ($field, $theme);
+
+@include f-tick($common-args...) {
+    border-right: $fo-checkbox--border-width solid currentColor;
+    border-top: $fo-checkbox--border-width solid currentColor;
+}
+
+// Tick > Not disabled + No error
+@include f-tick($common-args..., $state: ':not(:disabled)', $has-error: false) {
+    color: $f-border-color;
+}
+
+// Tick > Hover + Not disabled + No error
+@include f-tick(
+    $common-args...,
+    $state: ':hover:not(:disabled)',
+    $has-error: false
+) {
+    color: $f-border-color-hover;
+}
+
+// Tick > Focus + Not disabled + No error
+@include f-tick(
+    $common-args...,
+    $state: ':focus:not(:disabled)',
+    $has-error: false
+) {
+    color: $f-border-color-focus;
+}
+
+// Tick > Active + Not disabled + No error
+@include f-tick(
+    $common-args...,
+    $state: ':active:not(:disabled)',
+    $has-error: false
+) {
+    color: $f-border-color-active;
+}
+
+// Tick > Checked + Not disabled + No error
+@include f-tick(
+    $common-args...,
+    $state: ':checked:not(:disabled)',
+    $has-error: false
+) {
+    color: $fo-checkbox--color-checked;
+}
+
+// Tickbox
+@include f-tickbox($common-args...) {
+    background-color: $f-bg-color;
+    border: $fo-checkbox--border-width solid currentColor;
+    border-radius: $fo-checkbox--border-radius;
+}
+
+// Tickbox > Not disabled + No error
+@include f-tickbox(
+    $common-args...,
+    $state: ':not(:disabled)',
+    $has-error: false
+) {
+    color: $f-border-color;
+}
+
+// Tickbox > Hover + Not disabled + No error
+@include f-tickbox(
+    $common-args...,
+    $state: ':hover:not(:disabled)',
+    $has-error: false
+) {
+    color: $f-border-color-hover;
+}
+
+// Tickbox > Focus + Not disabled + No error
+@include f-tickbox(
+    $common-args...,
+    $state: ':focus:not(:disabled)',
+    $has-error: false
+) {
+    color: $f-border-color-focus;
+}
+
+// Tickbox > Checked + Not disabled + No error
+@include f-tickbox(
+    $common-args...,
+    $state: ':checked:not(:disabled)',
+    $has-error: false
+) {
+    color: $fo-checkbox--color-checked;
+}
+
+// Tickbox > Active + Not disabled + No error
+@include f-tickbox(
+    $common-args...,
+    $state: ':active:not(:disabled)',
+    $has-error: false
+) {
+    color: $f-border-color-active;
+}
+
+// Label text > Checked + Not disabled + No error
+@include f-label-text(
+    $common-args...,
+    $state: ':checked:not(:disabled)',
+    $has-error: false
+) {
+    color: $f-label-color-filled;
+}
+
+// Label text > Focus + Not disabled + No error
+@include f-label-text(
+    $common-args...,
+    $state: ':focus:not(:disabled)',
+    $has-error: false
+) {
+    color: $f-label-color-focus;
+}
+
+// Label text > Hover + Not disabled + No error
+@include f-label-text(
+    $common-args...,
+    $state: ':hover:not(:disabled)',
+    $has-error: false
+) {
+    color: $f-label-color-hover;
+}
+
+// Label text > Disabled
+@include f-label-text($common-args..., $state: ':disabled') {
+    color: $f-label-color-disabled;
+}
+
+// Message
+@include f-message($common-args...) {
+    margin: $fo-message-margin;
+}

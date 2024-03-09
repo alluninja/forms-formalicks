@@ -1,0 +1,79 @@
+// ================================
+// Radio Base
+// The base styles for themes
+// ================================
+
+// Imports
+@import './../core/core';
+@import './../core/common';
+
+// Variables
+$f-radio--spacing: 0.5em !default;
+$f-radio--label-line-height: 1 !default;
+
+$field: 'radio';
+
+// Mixins
+@include f-common-base($field);
+@include f-common-inner($field);
+@include f-common-label($field);
+@include f-common-label-text($field);
+@include f-common-label-indicator($field);
+@include f-common-message($field);
+
+@include f-inner($field) {
+    display: inline-flex;
+    flex-wrap: nowrap;
+    align-items: center;
+}
+
+@include f-field($field) {
+    clip: rect(1px, 1px, 1px, 1px); // Allows tabbing still
+    position: absolute;
+}
+
+// Circle
+@include f-label-before($field) {
+    content: '';
+    display: block;
+    width: 1em;
+    height: 1em;
+    flex-shrink: 0;
+    margin-right: $f-radio--spacing;
+}
+
+// Circle > Error
+@include f-label-before($field, $has-error: true) {
+    color: $f-error-color;
+}
+
+// Circle > Disabled
+@include f-label-before($field, $state: ':disabled') {
+    color: $f-border-color-disabled;
+}
+
+@include f-label($field) {
+    color: inherit;
+    position: relative;
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
+    transition: transition(color);
+    will-change: color;
+}
+
+@include f-label-text($field) {
+    line-height: $f-radio--label-line-height;
+    transition: transition(color);
+    will-change: color;
+}
+
+// Indicator > Filled (not disabled/hover/focus/error)
+@include f-label-indicator(
+    $field,
+    $state: ':not(:disabled):not(:hover):not(:focus)',
+    $has-error: false,
+    $is-filled: true
+) {
+    color: $f-border-color-filled;
+}

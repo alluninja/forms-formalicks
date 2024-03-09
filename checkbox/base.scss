@@ -1,0 +1,141 @@
+// ================================
+// Checkbox Base
+// The base styles for themes
+// ================================
+
+// Imports
+@import './../core/core';
+@import './../core/common';
+
+// Variables
+$f-checkbox--size: 1em !default;
+$f-checkbox--spacing: 0.75em !default;
+$f-checkbox--transition-duration: $f-transition-duration * 1.5 !default;
+$f-checkbox--has-animation: true !default;
+$f-checkbox--tick-position: -0.25em, 0em !default; // translate(x, y) fine tuning
+$f-checkbox--label-line-height: 1 !default;
+
+$field: 'checkbox';
+
+@include f-common-base($field);
+@include f-common-inner($field);
+@include f-common-label($field);
+@include f-common-label-text($field);
+@include f-common-field($field);
+@include f-common-label-indicator($field);
+@include f-common-message($field);
+
+@include f-inner($field) {
+    display: inline-flex;
+    flex-wrap: nowrap;
+    align-items: center;
+}
+
+@include f-tick($field) {
+    content: '';
+    display: block;
+    font-size: $f-checkbox--size;
+    transform: scaleX(-1) translate($f-checkbox--tick-position) rotate(135deg);
+    transform-origin: top left;
+    visibility: hidden;
+    transition: transition(color);
+    will-change: color, width, height;
+    position: absolute;
+    left: 0;
+    top: 50%;
+}
+
+// Tick > Not disabled + Error
+@include f-tick($field, $state: ':not(:disabled)', $has-error: true) {
+    color: $f-border-color-error;
+}
+
+// Tick > Disabled
+@include f-tick($field, $state: ':disabled') {
+    color: $f-border-color-disabled;
+}
+
+// Tick > Checked
+@include f-tick($field, $state: ':checked') {
+    visibility: visible;
+
+    @if ($f-checkbox--has-animation) {
+        animation: f-checkbox $f-checkbox--transition-duration forwards;
+        // Not 60fps but unavoidable as we need to animate the width and height
+        @keyframes f-checkbox {
+            0% {
+                height: 0em;
+                width: 0em;
+            }
+            25% {
+                height: 0em;
+                width: 0.35em;
+            }
+            50%,
+            100% {
+                height: 0.7em;
+                width: 0.35em;
+            }
+        }
+        // Set the end frame if no motion
+        @media screen and (prefers-reduced-motion) {
+            height: 0.7em;
+            width: 0.35em;
+        }
+    } @else {
+        height: 0.7em;
+        width: 0.35em;
+    }
+}
+
+@include f-tickbox($field) {
+    content: '';
+    display: block;
+    font-size: $f-checkbox--size;
+    margin-right: $f-checkbox--spacing;
+    width: 1.2em;
+    height: 1.2em;
+    display: block;
+    transition: transition(color);
+    will-change: color;
+    flex-shrink: 0;
+}
+
+// Tickbox > Not disabled + Error
+@include f-tickbox($field, $state: ':not(:disabled)', $has-error: true) {
+    color: $f-border-color-error;
+}
+
+// Tickbox > Disabled
+@include f-tickbox($field, $state: ':disabled') {
+    color: $f-border-color-disabled;
+}
+
+@include f-label($field) {
+    color: inherit;
+    position: relative;
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
+}
+
+@include f-label-text($field) {
+    line-height: $f-checkbox--label-line-height;
+    transition: transition(color);
+    will-change: color;
+}
+
+@include f-field($field) {
+    clip: rect(1px, 1px, 1px, 1px); // Allows tabbing still
+    position: absolute;
+}
+
+// Indicator > Filled (not disabled/hover/focus/error)
+@include f-label-indicator(
+    $field,
+    $state: ':not(:disabled):not(:hover):not(:focus)',
+    $has-error: false,
+    $is-filled: true
+) {
+    color: $f-border-color-filled;
+}

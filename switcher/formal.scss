@@ -1,0 +1,137 @@
+// ================================
+// Switcher Formal
+// Requires: switcher/base.scss
+// ================================
+
+// Imports
+@import './../core/core';
+@import './../core/outlined';
+
+// Variables
+$ff-switcher--border-width: $f-border-width * 2 !default;
+$ff-switcher--size: 1.15em !default;
+$ff-switcher--field-radius: 10vh !default;
+
+$field: 'switcher';
+$theme: 'formal';
+$common-args: ($field, $theme);
+
+// Mixins
+@include f-switcher-knob($common-args...) {
+    font-size: $ff-switcher--size;
+    box-shadow: inset 0 0 0 4px $f-bg-color;
+    background-color: $f-border-color;
+    width: 1.2em;
+    height: 1.2em;
+    border-radius: 50%;
+    border: $ff-switcher--border-width solid currentColor;
+}
+
+@include f-switcher-groove($common-args...) {
+    font-size: $ff-switcher--size;
+    border: $ff-switcher--border-width solid currentColor;
+    border-radius: $ff-switcher--field-radius;
+}
+
+// Theme
+.f-switcher--formal {
+    $field: '.f-switcher';
+    $switch: $field + '__label:after';
+    $switchbox: $field + '__label:before';
+
+    // Switch > Unchecked > Active
+    #{$field}__field:not(:checked):active + #{$switch} {
+        transform: translateX(-0.2em);
+    }
+
+    // Switch > Checked > Active
+    #{$field}__field:checked:active + #{$switch} {
+        transform: translateX(0.75em + 0.2em);
+    }
+
+    // Switch > Checked
+    #{$field}__field:checked + #{$switch} {
+        transform: translateX(0.75em + 0.1em);
+    }
+
+    // Switch > Disabled
+    #{$field}__field:disabled + #{$switch} {
+        background-color: $f-border-color-disabled;
+    }
+
+    // Switch > Error
+    &#{$f-selector-error} #{$switch} {
+        background-color: $f-error-color;
+    }
+
+    // Not error + not disabled fields
+    &:not(#{$f-selector-error}) #{$field}__field:not(:disabled) {
+        // Switch
+        & + #{$switch} {
+            color: $f-border-color;
+            transition: transition(background-color), transition(color),
+                transition(border-color), transform 0.1s;
+            will-change: color, transform;
+            background-color: $f-border-color;
+        }
+
+        // Switch > Hover
+        &:hover + #{$switch} {
+            color: $f-highlight-color;
+            background-color: currentColor;
+        }
+
+        // Switch > Focus
+        &:focus + #{$switch} {
+            color: $f-border-color;
+            background-color: currentColor;
+        }
+
+        // Switch > Active
+        &:active + #{$switch} {
+            color: $f-border-color;
+            animation: tremble $f-transition-duration/1.5 forwards infinite;
+        }
+
+        // Switch > Checked
+        &:checked + #{$switch} {
+            color: $f-highlight-color;
+            background-color: currentColor;
+        }
+
+        // Switchbox
+        & + #{$switchbox} {
+            color: $f-border-color;
+        }
+
+        // Switchbox > Hover
+        &:hover + #{$switchbox} {
+            color: $f-border-color;
+        }
+
+        // Switchbox > Focus
+        &:hover + #{$switchbox} {
+            color: $f-border-color;
+        }
+
+        // Switchbox > Active
+        &:active + #{$switchbox} {
+            color: $f-border-color;
+        }
+
+        // Switchbox > Checked
+        &:checked + #{$switchbox} {
+            color: $f-highlight-color;
+        }
+    }
+
+    @keyframes tremble {
+        to {
+            margin-left: 1px;
+        }
+    }
+}
+
+@include f-message($common-args...) {
+    margin: $fo-message-margin;
+}

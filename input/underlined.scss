@@ -1,0 +1,23 @@
+// ================================
+// Input Underlined
+// Requires: input/base.scss
+// ================================
+
+// Imports
+@import './../core/core';
+@import './../core/underlined';
+
+// Variables
+$field: 'input';
+$theme: 'underlined';
+$common-args: ($field, $theme);
+
+// Mixins
+@include fu-common-field($field);
+@include fu-common-label($field);
+@include fu-common-label-text($field);
+@include fu-common-indicator($field);
+
+@include f-message($common-args...) {
+    margin: $fu-message-margin;
+}

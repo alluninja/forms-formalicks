@@ -1,0 +1,37 @@
+// ================================
+// Select Base
+// The base styles for themes
+// ================================
+
+// Imports
+@import './../core/core';
+@import './../core/common';
+
+$field: 'select';
+
+@include f-common-base($field);
+@include f-common-inner($field);
+@include f-common-field($field);
+@include f-common-label($field);
+@include f-common-label-text($field);
+@include f-common-indicator($field);
+@include f-common-message($field);
+
+@include f-field($field) {
+    -webkit-appearance: none;
+    appearance: none;
+    // Remove arrow in IE10+
+    &::-ms-expand {
+        display: none;
+    }
+}
+
+// Field > Hover + Not disabled
+@include f-field($field, $state: ':not(:disabled):hover') {
+    cursor: pointer;
+}
+
+// Field > Focus + Not disabled
+@include f-field($field, $state: ':not(:disabled):focus') {
+    cursor: pointer;
+}

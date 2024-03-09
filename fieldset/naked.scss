@@ -1,0 +1,45 @@
+// ================================
+// Fieldset Naked
+// Requires: fieldset/base.scss
+// ================================
+
+// Imports
+@import './../core/core';
+
+// Variables
+$fn-fieldset--padding-top: 2em !default;
+$fn-fieldset--border-width: $f-border-width * 2 !default;
+$fn-fieldset--error-spacing: 1.5em !default;
+$fn-fieldset--message-margin: 1em 0 0 0 !default;
+$fn-fieldset--content-spacing: 1.25em !default;
+
+$field: 'fieldset';
+$theme: 'naked';
+$common-args: ($field, $theme);
+
+@include f-inner($common-args...) {
+    padding-top: $fn-fieldset--padding-top;
+}
+
+// Inner > Error
+@include f-base($common-args..., $has-error: true) {
+    border-left: $fn-fieldset--border-width solid $f-error-color;
+    padding-left: $fn-fieldset--error-spacing;
+}
+
+@include f-label($common-args...) {
+    display: block;
+}
+
+@include f-label-text($common-args...) {
+    color: $f-text-color;
+}
+
+// Label text > Error
+@include f-label-text($common-args..., $has-error: true) {
+    color: $f-error-color;
+}
+
+@include f-message($common-args...) {
+    margin: $fn-fieldset--message-margin;
+}
